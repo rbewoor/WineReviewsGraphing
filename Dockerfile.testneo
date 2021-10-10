@@ -1,0 +1,50 @@
+## Build custom neo4j 4.1.0 image which includes python test script to check connection with db.
+##
+## To test python connection to Neo4j from within the container of the neo4j itself AFTER neo4j has started successfully:
+## 1) Run container and start interactive mode in new terminal
+###   docker run --env NEO4J_AUTH=neo4j/cba rbewoor/myneo4j410nocmd:1.0
+###   docker exec -it <<continer-id>> /bin/bash
+## 2) Activate the virutal environment
+###   source /home/.venv/virtenv_testneo_1/bin/activate
+## 3) Run the script
+###   python3 /home/test_neo/test_neo4j_image_connection.py
+## 4) Expected output:
+##### Testing neo4j image connection from within container script....
+##### Func make_neo4j_connection_container_bolt_localhost_7687 called....
+##### gph_obj_bolt_localhost_7687 = Graph('bolt://neo4j@localhost:7687', name='neo4j')
+##### Func make_neo4j_connection_container_bolt_localhost_7474 called....
+##### gph_obj_bolt_localhost_7474 = Graph('bolt://neo4j@localhost:7687', name='neo4j')
+## Note: Function make_neo4j_connection_container_bolt_localhost_7687 has code as: Graph(uri="bolt://localhost:7687",auth=("neo4j","cba"))
+## Note: Function make_neo4j_connection_container_bolt_localhost_7474 has code as: Graph(uri="bolt://localhost:7474",auth=("neo4j","cba"))
+
+# Neo4j image
+FROM neo4j:4.1.0
+
+RUN echo "Starting - Dockerfile neo4j testing processing"
+
+# Get essentials
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Europe/London
+RUN apt-get update -y
+RUN apt-get install python3 -y
+RUN apt-get install python3-pip -y
+RUN apt-get install build-essential -y
+RUN apt-get install python3-venv -y
+RUN apt-get install python3-wheel -y
+
+# Setup data and folders
+RUN echo "Starting - Directory setup"
+RUN mkdir -p /home/test_neo
+
+# Copy necessary files
+RUN echo "Starting - Copy necessary files"
+COPY /code/test_neo4j_image_connection.py /home/test_neo/
+
+# Setup virutal environment and download Spacy large model
+RUN echo "Starting - Setup virtual environment"
+ENV VIRTUAL_ENV=/home/.venv/virtenv_testneo_1
+RUN mkdir /home/.venv && python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+RUN pip3 install wheel && pip3 install py2neo==2020.0.0
+
+RUN echo "Success - Dockerfile neo4j testing processing"

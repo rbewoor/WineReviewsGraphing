@@ -30,19 +30,23 @@ import pandas as pd
 import os
 import argparse
 import logging
+import shutil
 
 ## custom packages
 from utils.util_functions_1 import my_print_and_log
 
 def main():
     HOME = os.getcwd()
-    OP_DIR = os.path.join(HOME, 'inData') + r'/' ## where the individual files will be saved
+    OP_DIR = os.path.join(HOME, 'inData') + r'/' ## where the all the individual files will be saved - except the last 5!
+    OP_DIR_EXTRA = os.path.join(HOME, 'extraUserInput') + r'/' ## where 5 individual files will be saved
     TEMP_DIR = os.path.join(HOME, 'tempDir') + r'/' ## log files and any temporary files
 
     ## create temp folder if does not exist
     if not os.path.exists(TEMP_DIR):
         os.mkdir(TEMP_DIR)
-    print(f"\nCreated temp folder:: {TEMP_DIR}\n")
+        print(f"\nCreated temp folder:: {TEMP_DIR}\n")
+    else:
+        print(f"\nTemp folder already existed here: {TEMP_DIR}\n")
 
     ## setup logging file -   levels are DEBUG , INFO , WARNING , ERROR , CRITICAL
     logging.basicConfig(level=logging.INFO, filename=TEMP_DIR + 'LOG_create_data.log',                               \
@@ -61,7 +65,7 @@ def main():
         '--csv_rows_limit_processing',
         type=int,
         default=20,
-        help='Number of csv file rows to process and create the individual files. Enter a number less than 129970.')
+        help='Number of csv file rows to process and create the individual files. Valid values: integer in the range 9 < value < 129970.')
     args = argparser.parse_args()
 
     ## extract cla args
@@ -77,23 +81,50 @@ def main():
         my_print_and_log(myStr, "error")
         exit(50)
     ## check value for csv file limit
-    if CSV_FILES_LIMIT < 1 or CSV_FILES_LIMIT > 129970:
+    if not isinstance(CSV_FILES_LIMIT, int) or CSV_FILES_LIMIT < 10 or CSV_FILES_LIMIT > 129969:
         myStr = "\n".join([
-            f"\nFATAL ERROR: Invalid input for csvRowsLimit, enter a number from 1 to 129970",
+            f"\nFATAL ERROR: Invalid input for csvRowsLimit, enter an integer in the range 9 < value < 129970.",
             f"EXITING with error code 55\n",
             ])
         my_print_and_log(myStr, "error")
         exit(55)
-    ## create output directory if does not exist else error out
+    ## create output directory if does not exist else delete all files in the directory
     if not os.path.exists(OP_DIR):
         os.mkdir(OP_DIR)
     else:
-        myStr = "\n".join([
-            f"\nFATAL ERROR: Output directory already exists, please manually delete it and re-run: {OP_DIR}",
-            f"EXITING with error code 60\n",
-            ])
-        my_print_and_log(myStr, "error")
-        exit(60)
+        for existing_f in os.listdir(OP_DIR):
+            f_path = os.path.join(OP_DIR, existing_f)
+            try:
+                os.remove(f_path)
+            except Exception as op_dir_clearing_error:
+                myStr = "\n".join([
+                    f"\nFATAL ERROR: Output directory = {OP_DIR} already existed.\n",
+                    f"Problem while attempting to clear exisiting files, please manually delete them and re-run.\n",
+                    f"Error message: {op_dir_clearing_error}\n"
+                    f"EXITING with error code 60\n",
+                    ])
+                my_print_and_log(myStr, "error")
+                exit(60)
+        my_print_and_log(f"\nCleared any existing files in Output directory = {OP_DIR}")
+    ## create output directory EXTRA if does not exist else delete all files in the directory
+    if not os.path.exists(OP_DIR_EXTRA):
+        os.mkdir(OP_DIR_EXTRA)
+    else:
+        for existing_f in os.listdir(OP_DIR_EXTRA):
+            f_path = os.path.join(OP_DIR_EXTRA, existing_f)
+            try:
+                os.remove(f_path)
+            except Exception as op_dir_extra_clearing_error:
+                myStr = "\n".join([
+                    f"\nFATAL ERROR: Output directory = {OP_DIR_EXTRA} already existed.\n",
+                    f"Problem while attempting to clear exisiting files, please manually delete them and re-run.\n",
+                    f"Error message: {op_dir_extra_clearing_error}\n"
+                    f"EXITING with error code 65\n",
+                    ])
+                my_print_and_log(myStr, "error")
+                exit(65)
+        my_print_and_log(f"\nCleared any existing files in Output directory Extra = {OP_DIR_EXTRA}")
+    
     ## show and log the cla
     myStr = "\n".join([
         f"\nCommand line arguments checked. Proceeding with these values:",
@@ -108,20 +139,30 @@ def main():
         my_print_and_log(f"\nLoaded dataframe from file: {wineFileLoc}\nTotal rows in dataframe = {len(df)}\n")
 
         cnt_files_out = 1
+        limit_op_dir = CSV_FILES_LIMIT - 5 # all except last 5 files to the op_dir, last 5 files to op_dir_extra
         for idx, row in df.iterrows():
             if cnt_files_out > CSV_FILES_LIMIT:
                 break
-            else:
+            elif cnt_files_out <= limit_op_dir:
                 with open(OP_DIR + 'f' + str(cnt_files_out).zfill(4) + '.txt', 'w') as f:
                     f.write(row[0])
-                cnt_files_out += 1
-        my_print_and_log(f"\nCreated ** {cnt_files_out -1} ** files here: {OP_DIR}\n")
+            else:
+                with open(OP_DIR_EXTRA + 'f' + str(cnt_files_out).zfill(4) + '.txt', 'w') as f:
+                    f.write(row[0])
+            cnt_files_out += 1
+        myStr = "\n".join([
+            f"\nCreated ** {cnt_files_out -1 - 5} ** files here: {OP_DIR}",
+            f"Created ** {5} ** files here: {OP_DIR_EXTRA}",
+            ])
+        my_print_and_log(myStr, "info")
     except Exception as load_or_process_error:
         myStr = "\n".join([
             f"\nFATAL ERROR: Problem loading CSV data to dataframe or later writing to files.",
             f"Error message: {load_or_process_error}",
+            f"EXITING with error code 100\n",
             ])
         my_print_and_log(myStr, "error")
+        exit(100)
 
     print(f"\n\t\tDone.\n")
 

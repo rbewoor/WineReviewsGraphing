@@ -31,7 +31,8 @@ def make_neo4j_connection(_on_fail_return=False):
         Graph object, Error message
     """
     try:
-        gph = Graph(uri="bolt://localhost:7687",auth=("neo4j","abc"))
+        #gph = Graph(uri="bolt://localhost:7687",auth=("neo4j","abc"))
+        gph = Graph(uri="http://localhost:7474",auth=("neo4j","abc"))
     except Exception as error_msg_neo_connect:
         if _on_fail_return:
             ## return graph object as None, error message

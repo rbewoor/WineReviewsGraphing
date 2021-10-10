@@ -1,0 +1,21 @@
+version: '3'
+services:
+    myneo4j410-mycont:
+        image: rbewoor/myneo4j410nocmd:1.0
+        environment:
+            - NEO4J_AUTH=neo4j/abc
+        healthcheck:
+            test: wget http://localhost:7474 || exit 1
+            interval: 1s
+            timeout: 10s
+            retries: 20
+            start_period: 3s
+    winereviewapp-mycont:
+        image: rbewoor/winereviewapp:1.0
+        depends_on:
+            myneo4j410-mycont:
+                condition: service_healthy
+#        environment:
+#            - DISPLAY=$DISPLAY
+#        volumes:
+#            - /tmp/.X11-unix:/tmp/.X11-unix:rw 

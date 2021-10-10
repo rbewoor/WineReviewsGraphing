@@ -1,11 +1,15 @@
-LOG_LEVEL INFO : 2021-09-01 15:32:56,246 :: 
+LOG_LEVEL INFO : 2021-10-10 15:23:42,202 :: 
+Cleared any existing files in Output directory = /home/rohit/PyWDUbuntu/generic/WineReviewsGraphing/code/inData/
+LOG_LEVEL INFO : 2021-10-10 15:23:42,202 :: 
+Cleared any existing files in Output directory Extra = /home/rohit/PyWDUbuntu/generic/WineReviewsGraphing/code/extraUserInput/
+LOG_LEVEL INFO : 2021-10-10 15:23:42,202 :: 
 Command line arguments checked. Proceeding with these values:
 wineFileLoc: ./winemag-data-130k-v2.csv
 CSV_FILES_LIMIT: 30
-LOG_LEVEL INFO : 2021-09-01 15:32:56,303 :: 
+LOG_LEVEL INFO : 2021-10-10 15:23:42,298 :: 
 Loaded dataframe from file: ./winemag-data-130k-v2.csv
 Total rows in dataframe = 30
 
-LOG_LEVEL INFO : 2021-09-01 15:32:56,314 :: 
-Created ** 30 ** files here: /home/rohit/PyWDUbuntu/generic/WineReviewsGraphing/code/inData/
-
+LOG_LEVEL INFO : 2021-10-10 15:23:42,310 :: 
+Created ** 25 ** files here: /home/rohit/PyWDUbuntu/generic/WineReviewsGraphing/code/inData/
+Created ** 5 ** files here: /home/rohit/PyWDUbuntu/generic/WineReviewsGraphing/code/extraUserInput/

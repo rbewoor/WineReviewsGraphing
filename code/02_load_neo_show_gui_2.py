@@ -1,7 +1,10 @@
 ## -------------------------------------------------------------------------------------------------------------------------------------------------
 ## Goal: Process description text of wines as unstructured data from the input files. Perform feature extraction and load to Neo4j database.
 ##       Allow user to run pre-set queries and/or upload new data from a file with a GUI (using tkinter).
-##       New data can be provided only giving location of the text file to process.
+##       New data can be provided by two methods:
+##         1) Giving location of the text file
+##            or
+##         2) Free form text input
 ## -------------------------------------------------------------------------------------------------------------------------------------------------
 ## General logic flow:
 ##    Earlier in pipeline:
@@ -196,6 +199,40 @@ def preprocess_text(_in_tokens, _in_punc, _in_stop_words):
     _in_tokens = " ".join([i for i in _in_tokens])
     return _in_tokens
 
+def get_review_node_text_number_from_neo4j():
+    """
+    Goal: Read Neo4j to get highest numbered review node of user input text type and return the number
+    Accepts: Nothing
+    Return: Higest number or None
+    """
+    my_print_and_log(f"\nGetting review node raw text number from neo4j...\n")
+    stmt15_get_raw_text_review_node = r"MATCH (rn1:Review) WHERE rn1.name STARTS WITH 'r' RETURN rn1.name ORDER BY rn1.name DESC LIMIT 1"
+    
+    ## get graph object - but exit program if problem
+    graph, _ = make_neo4j_connection(_on_fail_return=False)
+    try:
+        tx = graph.begin()
+        res_q15 = tx.run(stmt15_get_raw_text_review_node, parameters={})
+        tx.commit()
+        while not tx.finished():
+            pass # tx.finished return True if the commit is complete
+        my_print_and_log(f"\nQuery to get raw text review node complete...\n")
+        res_q15 = list(res_q15)
+        if res_q15:
+            res_q15 = res_q15[0]['rn1.name']
+            res_q15 = int(res_q15[1:]) # remove leading character i.e. r
+        else:
+            res_q15 = None
+    except Exception as neo_get_raw_text_review_error:
+        myStr = "\n".join([
+            f"\nFATAL ERROR: Problem reading neo4j.",
+            f"Error message :: {neo_get_raw_text_review_error}",
+            f"EXITING with error code 130",
+            ])
+        my_print_and_log(myStr, "error")
+        exit(130)
+    return res_q15
+
 def get_features_set1(_fname, _text, _all_neo, _nlp, _punctuations, _stopwords, _do_ner=False, _do_topic=False, _do_sentiment=False):
     """
     Goal: Preprocess the raw text and extract features for neo4j
@@ -222,8 +259,18 @@ def get_features_set1(_fname, _text, _all_neo, _nlp, _punctuations, _stopwords, 
         'Varietals': list(),
     }
     
-    # node name - same as file name
-    node_name = _fname.split('.')[0]
+    # For File input, use file name as the node name. But parameter will be None then its raw text input,
+    #    so query Neo4j to find highest number for review node named 'rxxxx', increment by 1 and use it
+    #    as the new name.
+    if _fname is not None:
+        node_name = _fname.split('.')[0] # user adding data through file, so extract file number
+    else:
+        # user entering typed text as input
+        node_name = get_review_node_text_number_from_neo4j()
+        if node_name is not None:
+            node_name = 'r' + f"{node_name+1:04d}" # format as r9999 where 9999 is the incremented number
+        else:
+            node_name = 'r0000' # no such review node exists already so set as r0000
     neo_entry['Review']['name'] = node_name
     neo_entry['RevText']['raw'] = _text
     
@@ -296,10 +343,10 @@ class c_wine_tool_window:
         self.root.geometry("1200x900")
         
         self.status_msg = tk.StringVar()
-        self.status_msg.set(f"Please enter a file to upload or run some query. Waiting for user input...")
-        self.upload_to_neo_msg = f"Upload"
-        self.upload_file_path = f"Path :"
-        self.path_editable = f"--------"
+        self.status_msg.set(f"Please enter a file to upload, free text to upload, or run a query. Waiting for user input...")
+        self.upload_to_neo_file_msg = f"Upload File"
+        self.upload_to_neo_text_msg = f"Upload Text"
+        self.path_text_editable = f"--------"
         self.query_data_fixed = "Enter query data :"
         self.query_input_data = f"--------"
         self.queries_explained = "\n".join([
@@ -313,44 +360,49 @@ class c_wine_tool_window:
         self.result_fixed_text = "Result :"
         self.result = "---------------"
 
-        ## button upload to Neo
-        self.but_upload_to_neo = tk.Button(
+        ## button upload File to Neo
+        self.but_upload_file_to_neo = tk.Button(
             master=self.root,
-            text=self.upload_to_neo_msg,
+            text=self.upload_to_neo_file_msg,
             bg="green", fg="white",
             relief=tk.RAISED,
-            width=(len(self.upload_to_neo_msg) + 4),
+            width=(len(self.upload_to_neo_file_msg) + 2),
             height=1,
             borderwidth=7,
             command=partial(
                 self.do_upload_file_neo_processing,
             )
             )
-        ## label path for file
-        self.lbl_upload_file_path = tk.Label(
+        ## button upload Text to Neo
+        self.btn_upload_text_to_neo = tk.Button(
             master=self.root,
-            text=self.upload_file_path,
-            bg="black", fg="white",
-            width=(len(self.upload_file_path) + 4),
-            height=1
+            text=self.upload_to_neo_text_msg,
+            bg="green", fg="white",
+            relief=tk.RAISED,
+            width=(len(self.upload_to_neo_text_msg) + 2),
+            height=1,
+            borderwidth=7,
+            command=partial(
+                self.do_upload_text_neo_processing,
             )
-        ## text widget for editable upload file path
-        self.txt_editable_file_path = tk.Text(
+            )
+        ## text widget for editable file path or free form text input
+        self.txt_editable_file_or_text = tk.Text(
             master=self.root,
             width = 60,
             exportselection=0, ## otherwise only any accidentally selected text will be captured
-            height=3,
+            height=5,
             wrap=tk.WORD,
             state=tk.NORMAL
             )
-        self.txt_editable_file_path.insert(tk.END, self.path_editable)
+        self.txt_editable_file_or_text.insert(tk.END, self.path_text_editable)
         ## label for query explanation
         self.lbl_query_explanation = tk.Label(
             master=self.root,
             text=self.queries_explained,
             bg="blue", fg="white",
             width=150,
-            height=10,
+            height=8,
             justify=tk.LEFT,
             )
         ## label for query data
@@ -437,22 +489,22 @@ class c_wine_tool_window:
             )
 
         ## setup the grid
-        ## button upload to Neo
-        self.but_upload_to_neo.grid(
+        ## button upload File to Neo
+        self.but_upload_file_to_neo.grid(
             row=0, column=0,
             rowspan=1, columnspan=1,
             sticky="nsew",
             padx=5, pady=5,
         )
-        ## label path for file
-        self.lbl_upload_file_path.grid(
+        ## button upload Text to Neo
+        self.btn_upload_text_to_neo.grid(
             row=0, column=1,
             rowspan=1, columnspan=1,
             sticky="nsew",
             padx=5, pady=5,
         )
-        ## text widget for editable upload file path
-        self.txt_editable_file_path.grid(
+        ## text widget for editable file path or free form text input
+        self.txt_editable_file_or_text.grid(
             row=0, column=2,
             rowspan=1, columnspan=6,
             sticky="nsew",
@@ -714,13 +766,47 @@ class c_wine_tool_window:
         self.root.update_idletasks()
         return
     
+    def do_upload_text_neo_processing(self, ):
+        self.path_text_editable = self.txt_editable_file_or_text.get('1.0','end-1c').strip()
+        my_print_and_log(f"\nButton to upload TEXT pressed\n")
+        self.status_msg.set(f"Processing input text....")
+        self.root.update_idletasks()
+
+        ## get features into the data structure to populate for neo4j flat files
+        extracted_text = self.path_text_editable
+        data_neo_one_file = list()
+        get_features_set1(
+            None,
+            extracted_text, data_neo_one_file,
+            self.nlp, self.punctuations, self.stopwords,
+            self.flag_ner, self.flag_topic, self.flag_sentiment,
+            )
+        my_print_and_log(f"\nUser input processed and data structure is:\n{data_neo_one_file}\n", _only_log=True)
+        ## write as json file
+        try:
+            json_path = self.OP_DIR + 'user_input_temp_neo_data.json'
+            with open(json_path, "w") as f:
+                json.dump(data_neo_one_file, f)
+            my_print_and_log(f"\nUser input processed data successfully dumped to json file: {json_path}\n")
+        except Exception as neo_data_save_error:
+            my_print_and_log(f"\n\nERROR: User data not saved to json file after feature extraction.\nError message: {neo_data_save_error}\n")
+            self.status_msg = f"Error saving user input to json file."
+        ## do actual upload to neo4j db
+        load_neo4j_from_json(json_path, _clear_graph=False)
+        self.status_msg.set(f"Processed input raw text and uploaded to Neo4j successfully.")
+        self.root.update_idletasks()
+        return
+    
     def do_upload_file_neo_processing(self, ):
-        self.path_editable = self.txt_editable_file_path.get('1.0','end-1c').strip()
-        my_print_and_log(f"\nButton to upload file pressed\nFile to upload: {self.path_editable}\n")
+        #self.path_editable = self.txt_editable_file_path.get('1.0','end-1c').strip()
+        #my_print_and_log(f"\nButton to upload file pressed\nFile to upload: {self.path_editable}\n")
+        self.path_text_editable = self.txt_editable_file_or_text.get('1.0','end-1c').strip()
+        my_print_and_log(f"\nButton to upload FILE pressed\nFile to upload: {self.path_text_editable}\n")
         self.status_msg.set(f"Processing input file....")
         self.root.update_idletasks()
         ## check file exists
-        if not os.path.isfile(self.path_editable):
+        #if not os.path.isfile(self.path_editable):
+        if not os.path.isfile(self.path_text_editable):
             my_print_and_log(f"\nERROR: User specified file does not exist.\n")
             self.status_msg.set(f"Input file not found, re-enter please....")
             self.root.update_idletasks()
@@ -728,7 +814,8 @@ class c_wine_tool_window:
         
         ## attempt loading
         try:
-            with open(self.path_editable, 'r') as f:
+            #with open(self.path_editable, 'r') as f:
+            with open(self.path_text_editable, 'r') as f:
                 extracted_text = f.read()
         except Exception as upload_file_error:
             my_print_and_log(f"\nERROR: User specified file could not be opened\nError message: {upload_file_error}")
@@ -739,7 +826,7 @@ class c_wine_tool_window:
         ## get features into the data structure to populate for neo4j flat files
         data_neo_one_file = list()
         get_features_set1(
-            os.path.basename(self.path_editable).split(".")[0],
+            os.path.basename(self.path_text_editable).split(".")[0], #self.path_editable).split(".")[0]
             extracted_text, data_neo_one_file,
             self.nlp, self.punctuations, self.stopwords,
             self.flag_ner, self.flag_topic, self.flag_sentiment,

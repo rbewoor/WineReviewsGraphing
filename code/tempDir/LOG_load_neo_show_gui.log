@@ -1,112 +1,110 @@
-LOG_LEVEL INFO : 2021-09-01 15:33:16,473 :: num_inp_files = 30
-LOG_LEVEL INFO : 2021-09-01 15:33:16,473 :: 
+LOG_LEVEL INFO : 2021-10-10 15:24:34,355 :: 
+Folders created or already present:
+HOME = /home/rohit/PyWDUbuntu/generic/WineReviewsGraphing/code
+IP_DIR = /home/rohit/PyWDUbuntu/generic/WineReviewsGraphing/code/inData/
+OP_DIR = /home/rohit/PyWDUbuntu/generic/WineReviewsGraphing/code/outData/
+TEMP_DIR = /home/rohit/PyWDUbuntu/generic/WineReviewsGraphing/code/tempDir/
+
+LOG_LEVEL INFO : 2021-10-10 15:24:34,358 :: num_inp_files = 25
+LOG_LEVEL INFO : 2021-10-10 15:24:34,358 :: 
 Command line arguments checked. Proceeding with these values:
 reloadNeo: Y
-uploadLimit: 25
-LOG_LEVEL INFO : 2021-09-01 15:33:16,474 :: 
-Processing only 25 files....
+uploadLimit: 20
+LOG_LEVEL INFO : 2021-10-10 15:24:34,358 :: 
+Processing only 20 files....
 
-LOG_LEVEL INFO : 2021-09-01 15:33:16,476 :: 
-Extracted data from 26 input files....
+LOG_LEVEL INFO : 2021-10-10 15:24:34,361 :: 
+Extracted data from 21 input files....
 
-LOG_LEVEL INFO : 2021-09-01 15:33:16,511 :: 
-Loaded files to pandas dataframe. Total rows = 25
+LOG_LEVEL INFO : 2021-10-10 15:24:34,404 :: 
+Loaded files to pandas dataframe. Total rows = 20
 
-LOG_LEVEL INFO : 2021-09-01 15:33:16,948 :: 
+LOG_LEVEL INFO : 2021-10-10 15:24:34,754 :: 
 In load_neo4j function, attempting to load file and make entries to database
 
-LOG_LEVEL INFO : 2021-09-01 15:33:16,948 :: 
+LOG_LEVEL INFO : 2021-10-10 15:24:34,754 :: 
 Successfully loaded json data from file: /home/rohit/PyWDUbuntu/generic/WineReviewsGraphing/code/outData/temp_neo_data.json
 
-LOG_LEVEL INFO : 2021-09-01 15:33:19,601 :: 
+LOG_LEVEL INFO : 2021-10-10 15:24:37,399 :: 
 Cleared the graph...
 
-LOG_LEVEL INFO : 2021-09-01 15:33:19,601 :: 
-Total entries to process = 25
+LOG_LEVEL INFO : 2021-10-10 15:24:37,399 :: 
+Total entries to process = 20
 
-LOG_LEVEL INFO : 2021-09-01 15:33:19,618 :: Attempting to update of entry 1 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,001 :: 
-Completed updating entry 1 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,001 :: Attempting to update of entry 2 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,124 :: 
-Completed updating entry 2 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,124 :: Attempting to update of entry 3 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,165 :: 
-Completed updating entry 3 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,165 :: Attempting to update of entry 4 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,224 :: 
-Completed updating entry 4 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,224 :: Attempting to update of entry 5 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,240 :: 
-Completed updating entry 5 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,240 :: Attempting to update of entry 6 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,290 :: 
-Completed updating entry 6 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,290 :: Attempting to update of entry 7 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,307 :: 
-Completed updating entry 7 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,307 :: Attempting to update of entry 8 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,349 :: 
-Completed updating entry 8 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,349 :: Attempting to update of entry 9 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,374 :: 
-Completed updating entry 9 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,374 :: Attempting to update of entry 10 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,416 :: 
-Completed updating entry 10 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,416 :: Attempting to update of entry 11 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,449 :: 
-Completed updating entry 11 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,449 :: Attempting to update of entry 12 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,499 :: 
-Completed updating entry 12 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,499 :: Attempting to update of entry 13 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,532 :: 
-Completed updating entry 13 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,532 :: Attempting to update of entry 14 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,566 :: 
-Completed updating entry 14 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,566 :: Attempting to update of entry 15 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,607 :: 
-Completed updating entry 15 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,607 :: Attempting to update of entry 16 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,641 :: 
-Completed updating entry 16 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,641 :: Attempting to update of entry 17 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,657 :: 
-Completed updating entry 17 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,657 :: Attempting to update of entry 18 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,699 :: 
-Completed updating entry 18 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,699 :: Attempting to update of entry 19 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,715 :: 
-Completed updating entry 19 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,715 :: Attempting to update of entry 20 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,732 :: 
-Completed updating entry 20 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,732 :: Attempting to update of entry 21 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,766 :: 
-Completed updating entry 21 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,766 :: Attempting to update of entry 22 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,791 :: 
-Completed updating entry 22 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,791 :: Attempting to update of entry 23 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,808 :: 
-Completed updating entry 23 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,808 :: Attempting to update of entry 24 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,850 :: 
-Completed updating entry 24 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,850 :: Attempting to update of entry 25 of 25....
-LOG_LEVEL INFO : 2021-09-01 15:33:20,909 :: 
-Completed updating entry 25 of 25.
-LOG_LEVEL INFO : 2021-09-01 15:33:20,910 :: 
-Updated Neo4j: Review nodes=24, Entity nodes=1, Flavor nodes=3
+LOG_LEVEL INFO : 2021-10-10 15:24:37,411 :: Attempting to update of entry 1 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:37,812 :: 
+Completed updating entry 1 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:37,812 :: Attempting to update of entry 2 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:37,920 :: 
+Completed updating entry 2 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:37,920 :: Attempting to update of entry 3 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:37,961 :: 
+Completed updating entry 3 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:37,962 :: Attempting to update of entry 4 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,020 :: 
+Completed updating entry 4 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,020 :: Attempting to update of entry 5 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,036 :: 
+Completed updating entry 5 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,036 :: Attempting to update of entry 6 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,072 :: 
+Completed updating entry 6 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,072 :: Attempting to update of entry 7 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,136 :: 
+Completed updating entry 7 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,137 :: Attempting to update of entry 8 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,152 :: 
+Completed updating entry 8 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,153 :: Attempting to update of entry 9 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,195 :: 
+Completed updating entry 9 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,195 :: Attempting to update of entry 10 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,245 :: 
+Completed updating entry 10 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,245 :: Attempting to update of entry 11 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,295 :: 
+Completed updating entry 11 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,295 :: Attempting to update of entry 12 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,354 :: 
+Completed updating entry 12 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,354 :: Attempting to update of entry 13 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,387 :: 
+Completed updating entry 13 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,387 :: Attempting to update of entry 14 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,412 :: 
+Completed updating entry 14 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,412 :: Attempting to update of entry 15 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,448 :: 
+Completed updating entry 15 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,448 :: Attempting to update of entry 16 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,503 :: 
+Completed updating entry 16 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,503 :: Attempting to update of entry 17 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,520 :: 
+Completed updating entry 17 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,520 :: Attempting to update of entry 18 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,556 :: 
+Completed updating entry 18 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,556 :: Attempting to update of entry 19 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,586 :: 
+Completed updating entry 19 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,587 :: Attempting to update of entry 20 of 20....
+LOG_LEVEL INFO : 2021-10-10 15:24:38,646 :: 
+Completed updating entry 20 of 20.
+LOG_LEVEL INFO : 2021-10-10 15:24:38,646 :: 
+Updated Neo4j: Review nodes=19, Entity nodes=1, Flavor nodes=3
 
 
-LOG_LEVEL INFO : 2021-09-01 15:33:20,910 :: 
+LOG_LEVEL INFO : 2021-10-10 15:24:38,646 :: 
 Starting GUI logic...
 
-LOG_LEVEL INFO : 2021-09-01 15:33:27,906 :: 
+LOG_LEVEL INFO : 2021-10-10 15:24:45,597 :: 
+Query 1 processing started
+
+LOG_LEVEL INFO : 2021-10-10 15:24:45,597 :: 
+Node requested: Review
+
+LOG_LEVEL INFO : 2021-10-10 15:24:46,975 :: 
 
 	Done
 

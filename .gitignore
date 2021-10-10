@@ -1,4 +1,6 @@
 code/.ipynb_checkpoints
 code/utils/__pycache__/
 code/winemag-data-130k-v2.csv
+python3_requirements_*.txt
 *.odp
+docker_run_app_1.sh
