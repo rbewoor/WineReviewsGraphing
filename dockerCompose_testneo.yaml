@@ -1,0 +1,8 @@
+version: '3'
+services:
+    conttestneo4j410:
+        image: rbewoor/myneo4j410nocmd:1.0
+        environment:
+            - NEO4J_AUTH=neo4j/cba
+        volumes:
+            - ./tempneo4j/data:/var/lib/neo4j/data:rw

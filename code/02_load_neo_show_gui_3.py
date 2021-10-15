@@ -73,6 +73,7 @@ import json
 import argparse
 import logging
 from tqdm import tqdm
+import time
 
 ## gui
 import tkinter as tk
@@ -852,6 +853,10 @@ def run_gui(_nlp, _punctuations, _stopwords, _flag_ner, _flag_topic, _flag_senti
     return
 
 def main():
+    #SLEEP_TIME = 30
+    #print(f"\nSleeping for {SLEEP_TIME} secs....")
+    #time.sleep(SLEEP_TIME)
+    #print(f"\nFinished Sleeping for {SLEEP_TIME} secs....")
     HOME = os.getcwd()
     print(f"HOME = {HOME}")
     IP_DIR = os.path.join(HOME, 'inData') + r'/' ## where the individual files have already been saved
@@ -872,7 +877,14 @@ def main():
     flag_topic=False
     flag_sentiment=True
 
-    nlp = spacy.load("en_core_web_lg")
+    ## for docker using only small model as to limit size
+    in_docker_flag = os.environ.get('AM_I_IN_A_DOCKER_CONTAINER', "no")
+    if in_docker_flag == "yes":
+        nlp = spacy.load("en_core_web_sm")
+        my_print_and_log(f"\nIn docker environment....loaded spacy small model.\n")
+    else:
+        nlp = spacy.load("en_core_web_lg")
+        my_print_and_log(f"\nNot in docker environment....loaded spacy large model.\n")
     nlp.add_pipe('spacytextblob')
 
     punctuations = string.punctuation
@@ -1001,7 +1013,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-

@@ -1,21 +1,35 @@
 version: '3'
 services:
-    myneo4j410-mycont:
+    contneo4j410:
         image: rbewoor/myneo4j410nocmd:1.0
         environment:
-            - NEO4J_AUTH=neo4j/abc
+            - NEO4J_AUTH=neo4j/cba
         healthcheck:
             test: wget http://localhost:7474 || exit 1
             interval: 1s
             timeout: 10s
             retries: 20
-            start_period: 3s
-    winereviewapp-mycont:
+            start_period: 10s
+        ports:
+            - "27474:7474"
+        volumes:
+            - ./tempneo4j/data:/var/lib/neo4j/data:rw
+#        networks:
+#            - mywineappnetwork
+    contwinereviewapp:
         image: rbewoor/winereviewapp:1.0
         depends_on:
-            myneo4j410-mycont:
+            contneo4j410:
                 condition: service_healthy
-#        environment:
-#            - DISPLAY=$DISPLAY
-#        volumes:
-#            - /tmp/.X11-unix:/tmp/.X11-unix:rw 
+#        networks:
+#            - mywineappnetwork
+#        links:#deprecated and they docker docs say to use networks and volumes
+#            - contneo4j410
+        environment:
+            - NEO4J_CONTAINER_NAME=contneo4j410
+            - DISPLAY=$DISPLAY
+        volumes:
+            - /tmp/.X11-unix:/tmp/.X11-unix:rw
+#networks:
+#    mywineappnetwork:
+#        driver: bridge
