@@ -1,5 +1,5 @@
 # WineReviewsGraphing
-Application to extract knowledge from unstructured data and allow user querying of a graph database using GUI.
+Application to extract knowledge from unstructured data, graph into a Neo4j database, and allow user querying via a GUI.
 The application can be run either directly on host or as a docker. If running as a docker there are also two ways, both require
 execution of a bash script - one version uses docker run commands and the other uses docker-compose commands.
 
@@ -13,17 +13,7 @@ a GUI with tkinter to run preset queries and/or to upload new data (either as a 
 4) The github repo already has data from 1000 rows saved as text files. You can run only the scrip to load neo and show GUI without
 running the first python script.
 
-B) Notes on running the python scripts locally:
-1) 01_create_data_1.py:
-1a) To extract data from CSV file for first 400 rows and thus create 400 individual text files, run script as:
-python3 01_create_data_1.py -wineFileLoc './winemag-data-130k-v2.csv' -csvRowsLimit 400
-2) 02_load_neo_show_gui_3.py:
-2a) To process say only 300 of the potential 400 files:
-python3 02_load_neo_show_gui_3.py -reloadNeo Y  -uploadLimit 300
-2b) If running locally, you can also run without first clearing the Neo4j db, run script as:
-python3 02_load_neo_show_gui_3.py -reloadNeo N
-
-C) Notes on running Docker versions:
+B) Rinning the application with Docker:
 1) Two methods created to run the containers - one uses only "Docker Run" commands and other uses "Docker-compose" command
 1a) Both methods use xhost to display GUI from within container on local display
 1b) Create a temporary folder to mount volume for Neo4j db data
@@ -34,3 +24,13 @@ C) Notes on running Docker versions:
 3) Method 2: Docker-compose version - bash script name: app_dockerComposeVersion_1.sh
 3a) Copy bash script and "dockerCompose_wineReviews_1.yaml" into project folder
 3b) Run with sudo permission: sudo ./app_dockerComposeVersion_1.sh
+
+C) Notes on running the python scripts locally:
+1) 01_create_data_1.py:
+1a) To extract data from CSV file for first 400 rows and thus create 400 individual text files, run script as:
+python3 01_create_data_1.py -wineFileLoc './winemag-data-130k-v2.csv' -csvRowsLimit 400
+2) 02_load_neo_show_gui_3.py:
+2a) To process say only 300 of the potential 400 files:
+python3 02_load_neo_show_gui_3.py -reloadNeo Y  -uploadLimit 300
+2b) If running locally, you can also run without first clearing the Neo4j db, run script as:
+python3 02_load_neo_show_gui_3.py -reloadNeo N
