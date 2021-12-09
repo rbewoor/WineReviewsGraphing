@@ -15,7 +15,7 @@ running the first python script.
 
 B) Running the application with Docker:
 1) Two methods created to run the containers - one uses only "Docker Run" commands and other uses "Docker-compose" command
-1a) Both methods use xhost to display GUI from within container on local display
+1a) Both methods use xhost to display GUI from within container on host display
 1b) Create a temporary folder to mount volume for Neo4j db data
 1c) Perform cleanup after running the application - remove temp folder, docker network, disable xhost permissions
 2) Method 1: Docker Run version - bash script name: app_dockerRunVersion_1.sh
