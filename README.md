@@ -10,10 +10,10 @@ A) General notes about application: Please also see the presentation PDF file fo
 a GUI with tkinter to run preset queries and/or to upload new data (either as a path for a new text file OR as typed input).
 3a) Features extracted: word count, sentence count, sentiment analysis, named entity recognition.
 3b) Graph has three types of nodes: Review, Flavor, Entity
-4) The github repo already has data from 1000 rows saved as text files. You can run only the scrip to load neo and show GUI without
+4) The github repo already has data from 1000 rows saved as text files. You can run only the script to load neo and show GUI without
 running the first python script.
 
-B) Rinning the application with Docker:
+B) Running the application with Docker:
 1) Two methods created to run the containers - one uses only "Docker Run" commands and other uses "Docker-compose" command
 1a) Both methods use xhost to display GUI from within container on local display
 1b) Create a temporary folder to mount volume for Neo4j db data
