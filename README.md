@@ -1,5 +1,5 @@
 # WineReviewsGraphing
-Application to extract knowledge from unstructured data, graph into a Neo4j database, and allow user querying via a GUI.
+Application to extract knowledge from unstructured data, process and load data into a Neo4j database, and then allow querying via a GUI.
 The application can be run either directly on host or as a docker. If running as a docker there are also two ways, both require
 execution of a bash script - one version uses docker run commands and the other uses docker-compose commands.
 
